@@ -1,0 +1,8 @@
+nlp = spacy.load("en_core_web_sm")
+
+def lemmatize(text):
+    doc = nlp(text)
+    return " ".join([token.lemma_ for token in doc if token.text not in stopwords.words('english')])
+
+df['lemmatized'] = df['cleaned'].apply(lemmatize)
+df.to_csv('outputs/cleaned_survey.csv', index=False)
