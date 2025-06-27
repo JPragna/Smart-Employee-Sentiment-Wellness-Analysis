@@ -56,14 +56,29 @@ Employees are classified into three categories:
 
 ```
 Smart-Employee-Sentiment-Wellness-Analysis/
-├── data/                      # Raw and cleaned datasets
-├── notebooks/                # Jupyter notebooks for each stage
-├── models/                   # Saved ML models (e.g., BERT, vectorizers)
-├── outputs/                  # Final reports, labeled data, visuals
-├── src/                      # Python scripts for pipeline automation
-├── README.md
+├── data/
+│   └── survey_responses.csv
+├── outputs/
+│   ├── cleaned_survey.csv
+│   ├── sentiment_labeled.csv
+│   ├── wellness_labels.csv
+│   └── topic_modeling_visuals/
+├── notebooks/
+│   ├── 01_text_preprocessing.ipynb
+│   ├── 02_sentiment_analysis.ipynb
+│   ├── 03_wellness_classification.ipynb
+│   └── 04_topic_modeling.ipynb
+├── src/
+│   ├── preprocess.py
+│   ├── sentiment_utils.py
+│   └── topic_modeling.py
+├── app.py                        # Streamlit UI
 ├── requirements.txt
+├── Dockerfile
+├── .dockerignore
+├── README.md
 └── .gitignore
+
 ```
 
 ---
