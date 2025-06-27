@@ -1,0 +1,50 @@
+# 📒 02_sentiment_analysis.ipynb (Python version for reference)
+
+import pandas as pd
+from textblob import TextBlob
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+import matplotlib.pyplot as plt
+
+# Load preprocessed data
+df = pd.read_csv("../outputs/cleaned_survey.csv")
+
+# VADER Sentiment
+vader_analyzer = SentimentIntensityAnalyzer()
+def vader_sentiment(text):
+    return vader_analyzer.polarity_scores(text)['compound']
+
+df['vader_score'] = df['lemmatized'].apply(vader_sentiment)
+
+# TextBlob Sentiment
+
+def textblob_sentiment(text):
+    return TextBlob(text).sentiment.polarity
+
+df['textblob_score'] = df['lemmatized'].apply(textblob_sentiment)
+
+# Average Sentiment Score
+df['avg_sentiment'] = df[['vader_score', 'textblob_score']].mean(axis=1)
+
+# Sentiment Labeling based on threshold
+def label_sentiment(score):
+    if score >= 0.2:
+        return "Positive"
+    elif score <= -0.2:
+        return "Negative"
+    else:
+        return "Neutral"
+
+df['sentiment_label'] = df['avg_sentiment'].apply(label_sentiment)
+
+# Save output
+df.to_csv("../outputs/sentiment_labeled.csv", index=False)
+
+# Plot sentiment distribution
+sentiment_counts = df['sentiment_label'].value_counts()
+sentiment_counts.plot(kind='bar', color=['green', 'grey', 'red'])
+plt.title("Employee Sentiment Distribution")
+plt.xlabel("Sentiment")
+plt.ylabel("Number of Responses")
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.show()
