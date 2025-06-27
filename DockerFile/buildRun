@@ -1,0 +1,5 @@
+# Build
+docker build -t wellness-ui .
+
+# Run
+docker run -p 8501:8501 wellness-ui
