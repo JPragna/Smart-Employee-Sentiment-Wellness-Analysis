@@ -1,0 +1,2 @@
+df = pd.read_csv('data/survey_responses.csv')
+df.head()
