@@ -1,0 +1,25 @@
+# Core NLP
+nltk
+spacy
+textblob
+vaderSentiment
+
+# Advanced NLP
+transformers
+datasets
+
+# ML + Utilities
+scikit-learn
+pandas
+numpy
+matplotlib
+plotly
+wordcloud
+
+# Topic Modeling
+gensim
+
+# Optional
+tqdm
+seaborn
+jupyter
