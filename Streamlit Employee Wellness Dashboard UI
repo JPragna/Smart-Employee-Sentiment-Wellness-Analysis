@@ -1,0 +1,42 @@
+# Streamlit UI: Employee Wellness Dashboard
+
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+
+# Load data
+@st.cache_data
+def load_data():
+    df = pd.read_csv("outputs/wellness_labels.csv")
+    return df
+
+df = load_data()
+
+# Title
+st.title("🧠 Employee Sentiment & Wellness Dashboard")
+
+# Filters
+st.sidebar.header("🔎 Filter Options")
+sentiment_filter = st.sidebar.multiselect("Sentiment Label:", options=df['sentiment_label'].unique(), default=df['sentiment_label'].unique())
+wellness_filter = st.sidebar.multiselect("Wellness Status:", options=df['wellness_status'].unique(), default=df['wellness_status'].unique())
+
+filtered_df = df[df['sentiment_label'].isin(sentiment_filter) & df['wellness_status'].isin(wellness_filter)]
+
+# KPI Section
+st.subheader("📊 Key Metrics")
+col1, col2, col3 = st.columns(3)
+col1.metric("Total Employees", len(filtered_df))
+col2.metric("At Risk", sum(filtered_df['wellness_status'] == 'At Risk'))
+col3.metric("Thriving", sum(filtered_df['wellness_status'] == 'Thriving'))
+
+# Pie Chart
+fig_pie = px.pie(filtered_df, names='wellness_status', title='Wellness Distribution')
+st.plotly_chart(fig_pie)
+
+# Sentiment Bar Chart
+fig_bar = px.histogram(filtered_df, x='sentiment_label', color='wellness_status', barmode='group', title='Sentiment vs Wellness')
+st.plotly_chart(fig_bar)
+
+# Data Preview
+st.subheader("📄 Data Preview")
+st.dataframe(filtered_df.head())
